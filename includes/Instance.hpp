@@ -13,6 +13,13 @@ namespace pem {
     Minutes(Minutes) {}
   };
 
+  class Duration {
+    Time T;
+    unsigned Day;
+  public:
+    Duration(Time T, unsigned Day) : T(T), Day(Day) {}
+  };
+
   class Task {
     std::string BusLineID;
     char Origin, Destination;
@@ -35,16 +42,19 @@ namespace pem {
 
   class SimpleTask {
     unsigned TaskID; //input line
-    Time EndTime;
+    Duration EndTime;
   public:
-    SimpleTask() {}
+    SimpleTask(Duration EndTime, unsigned TaskID) : EndTime(EndTime), 
+    TaskID(TaskID) {}
   };
 
   class Journey {
     std::vector<SimpleTask> Tasks; 
-    unsigned JourneyID;
   public:
     Journey() {}
+    void addTask(SimpleTask Task) { 
+      Tasks.push_back(Task);
+    }
   };
 
   class Instance {
@@ -57,11 +67,12 @@ namespace pem {
     std::vector<Task> Tasks;
   public:
     Input(const std::string&); 
+    unsigned getInstanceSize() { return InstanceSize; }
   };
 
   class Output : public Instance {
-    std::vector<Journey> Journeys;
+    Journey *Journeys;
   public:
-    Output(const std::string&); 
+    Output(const std::string&, unsigned); 
   };
 }

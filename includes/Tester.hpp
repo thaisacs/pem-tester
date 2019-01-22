@@ -8,7 +8,8 @@
 
 namespace pem {
   class Tester {
-    std::unique_ptr<Instance> IN, OUT;
+    std::unique_ptr<Input> IN;
+    std::unique_ptr<Output> OUT;
   public:
     Tester(const std::string&, const std::string&);
     void run() {}

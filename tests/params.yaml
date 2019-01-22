@@ -1,0 +1,14 @@
+TotalPaidTime: 432
+
+StretchTime: 360
+#RestTime:
+#  Min: 90
+#  Max: 300
+
+Overtime: 120 #horas extras
+
+SprendoverTime: 780
+
+#NightWorking:
+#  Start: 10 #pm
+#  End: 5 #am
