@@ -11,13 +11,15 @@ namespace pem {
   public:
     Time(unsigned Hour, unsigned Minutes) : Hour(Hour), 
     Minutes(Minutes) {}
+    void print();
   };
 
   class Duration {
     Time T;
-    unsigned Day;
+    unsigned Days;
   public:
-    Duration(Time T, unsigned Day) : T(T), Day(Day) {}
+    Duration(Time T, unsigned Days) : T(T), Days(Days) {}
+    void print();
   };
 
   class Task {
@@ -34,10 +36,7 @@ namespace pem {
     char getOrigin() { return Origin; }
     char getDestination() { return Destination; }
     unsigned getVehicleID() { return VehicleID; }
-    void print() {
-      std::cout << BusLineID << ", " << Origin << ", " << Destination << ", " <<
-        Duration << ", " << VehicleID << std::endl;
-    };
+    void print();
   };
 
   class SimpleTask {
@@ -46,6 +45,7 @@ namespace pem {
   public:
     SimpleTask(Duration EndTime, unsigned TaskID) : EndTime(EndTime), 
     TaskID(TaskID) {}
+    void print();
   };
 
   class Journey {
@@ -55,6 +55,7 @@ namespace pem {
     void addTask(SimpleTask Task) { 
       Tasks.push_back(Task);
     }
+    void print();
   };
 
   class Instance {
@@ -68,11 +69,13 @@ namespace pem {
   public:
     Input(const std::string&); 
     unsigned getInstanceSize() { return InstanceSize; }
+    void print();
   };
 
   class Output : public Instance {
     Journey *Journeys;
   public:
     Output(const std::string&, unsigned); 
+    void print();
   };
 }

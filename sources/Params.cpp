@@ -19,7 +19,6 @@ void MappingTraits<PEMParams>::mapping(IO &io, PEMParams &params) {
   io.mapRequired("StretchTime", params.StretchTime);
   io.mapRequired("Overtime", params.Overtime);
   io.mapRequired("SprendoverTime", params.SprendoverTime);
-  
   io.mapRequired("RestTime", params.RestTime);
   io.mapRequired("NightWorking", params.NightWorking);
 }

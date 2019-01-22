@@ -278,3 +278,37 @@ Output::Output(const std::string &FileName, unsigned InstanceSize) {
  
   File.close();
 }
+
+//===----------------------------------------------------------------------===//
+//// Print 
+//===----------------------------------------------------------------------===//
+
+void Time::print() {
+  std::cout << Hour << ":" << Minutes;
+}
+
+void Duration::print() {}
+
+void Task::print() {
+  std::cout << BusLineID << ", " << Origin << ", " << Destination << ", " <<
+  Duration << ", "; 
+  StartTime.print();
+  std::cout << ", " << VehicleID << std::endl;
+}
+
+void SimpleTask::print() {}
+
+void Journey::print() {}
+
+void Input::print() {
+  for(unsigned i = 0; i < Tasks.size(); i++) {
+    Tasks[i].print();
+  }
+}
+
+void Output::print() {
+  //for(unsigned i = 0; i < Journeys.size(); i++) {
+  //  Journeys[i].print();
+  //}
+}
+

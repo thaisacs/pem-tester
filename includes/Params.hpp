@@ -3,7 +3,6 @@
 #include "llvm/Support/YAMLTraits.h"
 
 namespace pem {
-
   struct RestTimeStruct {
     unsigned Min, Max;
   };
