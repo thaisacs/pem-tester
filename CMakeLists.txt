@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 project(pem)
 
 set(CMAKE_CXX_FLAGS "-O3 -g")
-set(CMAKE_CXX_COMPILER "g++-7")
+set(CMAKE_CXX_COMPILER "g++")
 
 find_package(LLVM REQUIRED CONFIG)
 

@@ -43,17 +43,16 @@ namespace pem {
     unsigned TaskID; //input line
     Duration EndTime;
   public:
-    SimpleTask(Duration EndTime, unsigned TaskID) : EndTime(EndTime), 
-    TaskID(TaskID) {}
+    SimpleTask(Duration EndTime, unsigned TaskID) : EndTime(EndTime), TaskID(TaskID) {}
     void print();
   };
 
   class Journey {
-    std::vector<SimpleTask> Tasks; 
+    std::vector<std::unique_ptr<SimpleTask>> Tasks; 
   public:
     Journey() {}
-    void addTask(SimpleTask Task) { 
-      Tasks.push_back(Task);
+    void addTask(std::unique_ptr<SimpleTask> T) { 
+      Tasks.push_back(std::move(T));
     }
     void print();
   };
@@ -65,7 +64,7 @@ namespace pem {
 
   class Input : public Instance {
     unsigned InstanceSize; 
-    std::vector<Task> Tasks;
+    std::vector<std::unique_ptr<Task>> Tasks;
   public:
     Input(const std::string&); 
     unsigned getInstanceSize() { return InstanceSize; }
@@ -73,7 +72,7 @@ namespace pem {
   };
 
   class Output : public Instance {
-    Journey *Journeys;
+    std::vector<std::unique_ptr<Journey>> Journeys;
   public:
     Output(const std::string&, unsigned); 
     void print();

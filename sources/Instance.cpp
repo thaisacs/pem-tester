@@ -182,7 +182,6 @@ Duration FindEndTime(std::string Line) {
   unsigned i = 0, Number = 0;
   char c = Line[i];
  
-  // find third field
   for(unsigned j = 0; j < 6; j++) {
     while(c != 0x20) {
       c = Line[++i];
@@ -192,17 +191,21 @@ Duration FindEndTime(std::string Line) {
     }
   }
   
-  unsigned Day = c - 48, Hour, Minute;
+  unsigned Day = c - 48, Hour = 0, Minute = 0;
   c = Line[++i];
   c = Line[++i];
   Hour = c - 48;
   c = Line[++i];
-  Hour = Hour * 10 + c - 48;
-  c = Line[++i];
+  if(c != ':') {
+    Hour = Hour * 10 + c - 48;
+    c = Line[++i];
+  }
   c = Line[++i];
   Minute = c - 48;
   c = Line[++i];
-  //Minute = Minute * 10 + c - 48;
+  if(c != ' ') {
+    Minute = Minute * 10 + c - 48;
+  }
  
   Time T(Hour, Minute);
   Duration D(T, Day);
@@ -236,23 +239,25 @@ Input::Input(const std::string &FileName) {
   std::string Line;
   std::ifstream File(FileName);
 
-  if(!File.is_open())
+  if(!File.is_open()) {
+    std::cout << "Could not open input file\n";
     exit(1);
+  }
 
-  /// eat number of tasks
+  // eat number of tasks
   getline(File, Line);
-
+  
   InstanceSize = std::stoi(Line, nullptr, 10); 
   
   for(unsigned i = 0; i < InstanceSize; i++) {
     getline(File, Line);
     
     Time T(FindStartTimeHour(Line), FindStartTimeMinutes(Line));
-
-    Task TA(FindBusLineID(Line), FindOrigin(Line), 
+    
+    auto TA = std::make_unique<Task>(FindBusLineID(Line), FindOrigin(Line),
         FindDestination(Line), FindVehicleID(Line), T, FindDuration(Line));
     
-    Tasks.push_back(TA);
+    Tasks.push_back(std::move(TA));
   }
  
   File.close();
@@ -262,18 +267,24 @@ Output::Output(const std::string &FileName, unsigned InstanceSize) {
   std::string Line;
   std::ifstream File(FileName);
 
-  Journeys = new Journey[InstanceSize];
-
-  if(!File.is_open())
+  if(!File.is_open()) {
+    std::cout << "Could not open output file\n";
     exit(1);
+  }
 
+  for(unsigned i = 0; i < InstanceSize; i++) {
+    auto JN = std::make_unique<Journey>();
+    Journeys.push_back(std::move(JN));
+  }
+    
   for(unsigned i = 0; i < InstanceSize; i++) {
     getline(File, Line);
     unsigned L = FindInputLine(Line);
     Duration D = FindEndTime(Line);
     unsigned ID = FindJourneyID(Line);
-    SimpleTask ST(D, L);
-    Journeys[ID].addTask(ST);
+    
+    auto ST = std::make_unique<SimpleTask>(D, L);
+    Journeys[ID]->addTask(std::move(ST));
   }
  
   File.close();
@@ -287,7 +298,10 @@ void Time::print() {
   std::cout << Hour << ":" << Minutes;
 }
 
-void Duration::print() {}
+void Duration::print() {
+  T.print();
+  std::cout << " " << Days << std::endl;
+}
 
 void Task::print() {
   std::cout << BusLineID << ", " << Origin << ", " << Destination << ", " <<
@@ -296,19 +310,26 @@ void Task::print() {
   std::cout << ", " << VehicleID << std::endl;
 }
 
-void SimpleTask::print() {}
+void SimpleTask::print() {
+  std::cout << TaskID << " ";
+  EndTime.print();
+}
 
-void Journey::print() {}
+void Journey::print() {
+  for(unsigned i = 0; i < Tasks.size(); i++) {
+    Tasks[i]->print();
+  }
+}
 
 void Input::print() {
   for(unsigned i = 0; i < Tasks.size(); i++) {
-    Tasks[i].print();
+    Tasks[i]->print();
   }
 }
 
 void Output::print() {
-  //for(unsigned i = 0; i < Journeys.size(); i++) {
-  //  Journeys[i].print();
-  //}
+  for(unsigned i = 0; i < Journeys.size(); i++) {
+    Journeys[i]->print();
+  }
 }
 
