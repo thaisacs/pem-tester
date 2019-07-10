@@ -82,6 +82,9 @@ unsigned FindStartTimeHour(const std::string Line) {
     c = Line[i];
   }
 
+  if(Number > 23)
+    Number -= 24;
+
   return Number;
 }
 
@@ -109,7 +112,7 @@ unsigned FindStartTimeMinutes(std::string Line) {
     i++;
     c = Line[i];
   }
-
+  
   return Number;
 }
 
@@ -273,20 +276,19 @@ Output::Output(const std::string &FileName, unsigned InstanceSize) {
   }
 
   for(unsigned i = 0; i < InstanceSize; i++) {
-    auto JN = std::make_unique<Journey>();
-    Journeys.push_back(std::move(JN));
-  }
-    
-  for(unsigned i = 0; i < InstanceSize; i++) {
     getline(File, Line);
     unsigned L = FindInputLine(Line);
     Duration D = FindEndTime(Line);
     unsigned ID = FindJourneyID(Line);
     
+    if(Journeys.size() <= ID) {
+      auto JN = std::make_unique<Journey>();
+      Journeys.push_back(std::move(JN));
+    }
+    
     auto ST = std::make_unique<SimpleTask>(D, L);
     Journeys[ID]->addTask(std::move(ST));
   }
- 
   File.close();
 }
 
@@ -295,7 +297,7 @@ Output::Output(const std::string &FileName, unsigned InstanceSize) {
 //===----------------------------------------------------------------------===//
 
 void Time::print() {
-  std::cout << Hour << ":" << Minutes;
+  std::cout << Hour << ":" << Minutes << std::endl;;
 }
 
 void Duration::print() {

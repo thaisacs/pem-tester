@@ -1,4 +1,4 @@
-TotalPaidTime: 432
+TotalPaidTime: 440
 
 StretchTime: 360
 RestTime:
@@ -10,5 +10,15 @@ Overtime: 120 #horas extras
 SprendoverTime: 780
 
 NightWorking:
-  Start: 10 #pm
-  End: 5 #am
+  Start: 22
+  End: 5
+
+# Restrições
+#
+# trabalho normal: 440 minutos
+# horas extras: 120 minutos
+# tn + hr: 560 minutos
+#
+# descanso: 300 minutos
+#
+# jornada no máximo: 780???? 860

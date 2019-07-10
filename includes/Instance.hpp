@@ -7,17 +7,17 @@
 
 namespace pem {
   class Time {
-    unsigned Hour, Minutes;
   public:
+    unsigned Hour, Minutes;
     Time(unsigned Hour, unsigned Minutes) : Hour(Hour), 
-    Minutes(Minutes) {}
+      Minutes(Minutes) {}
     void print();
   };
 
   class Duration {
+  public:
     Time T;
     unsigned Days;
-  public:
     Duration(Time T, unsigned Days) : T(T), Days(Days) {}
     void print();
   };
@@ -36,6 +36,7 @@ namespace pem {
     char getOrigin() { return Origin; }
     char getDestination() { return Destination; }
     unsigned getVehicleID() { return VehicleID; }
+    Time getStartTime() { return StartTime; }
     void print();
   };
 
@@ -44,12 +45,14 @@ namespace pem {
     Duration EndTime;
   public:
     SimpleTask(Duration EndTime, unsigned TaskID) : EndTime(EndTime), TaskID(TaskID) {}
+    unsigned getTaskID() { return TaskID; }
+    Duration getEndTime() { return EndTime; }
     void print();
   };
 
   class Journey {
-    std::vector<std::unique_ptr<SimpleTask>> Tasks; 
   public:
+    std::vector<std::unique_ptr<SimpleTask>> Tasks; 
     Journey() {}
     void addTask(std::unique_ptr<SimpleTask> T) { 
       Tasks.push_back(std::move(T));
@@ -63,17 +66,16 @@ namespace pem {
   };
 
   class Input : public Instance {
+  public:
     unsigned InstanceSize; 
     std::vector<std::unique_ptr<Task>> Tasks;
-  public:
     Input(const std::string&); 
-    unsigned getInstanceSize() { return InstanceSize; }
     void print();
   };
 
   class Output : public Instance {
-    std::vector<std::unique_ptr<Journey>> Journeys;
   public:
+    std::vector<std::unique_ptr<Journey>> Journeys;
     Output(const std::string&, unsigned); 
     void print();
   };

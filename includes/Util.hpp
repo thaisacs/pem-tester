@@ -5,4 +5,4 @@
 
 void usage();
 
-void VerifyArgs(int argc, char **argv); 
+void VerifyArgs(int argc, char **argv);
