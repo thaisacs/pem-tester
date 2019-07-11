@@ -1,6 +1,7 @@
 #include "Util.hpp"
 
 extern std::string InFile, OutFile, ParamFile;
+extern unsigned Size;
 
 void usage() {
   std::cout << "pemtester" << std::endl;
@@ -9,7 +10,7 @@ void usage() {
 void VerifyArgs(int argc, char **argv) {
   char c;
   
-  while((c = getopt(argc, argv, "ho:i:p:")) != -1) {
+  while((c = getopt(argc, argv, "ho:i:p:s:")) != -1) {
     switch(c) {
       case 'h':
         usage();
@@ -23,6 +24,8 @@ void VerifyArgs(int argc, char **argv) {
       case 'p':
         ParamFile = optarg;
         break;
+      case 's':
+        Size = atoi(optarg);
     } 
   }
 }

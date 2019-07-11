@@ -2,6 +2,29 @@
 
 using namespace pem;
 
+Time Task::getEndTime() {
+  unsigned Minutes = StartTime.Minutes;
+  unsigned Hour = StartTime.Hour;
+  unsigned Times = 0;
+
+  Minutes += Duration;
+
+  while(Minutes > 59) {
+    Times++;
+    Minutes -= 60;
+  }
+
+  Hour += Times;
+ 
+  if(Hour > 23)
+    Hour -= 24;
+
+  Time T(Hour, Minutes);
+
+  return T;
+}
+
+
 std::string FindBusLineID(const std::string &Line) {
   std::string Result = "";
   unsigned i = 1;

@@ -37,6 +37,7 @@ namespace pem {
     char getDestination() { return Destination; }
     unsigned getVehicleID() { return VehicleID; }
     Time getStartTime() { return StartTime; }
+    Time getEndTime();
     void print();
   };
 

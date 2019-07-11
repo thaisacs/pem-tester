@@ -2,6 +2,7 @@
 
 #include "Instance.hpp"
 #include "Params.hpp"
+#include "Output.hpp"
 
 #include <iostream>
 #include <string>
@@ -11,11 +12,12 @@
 namespace pem {
   class Tester {
     std::unique_ptr<Input> IN;
-    std::unique_ptr<Output> OUT;
+    //std::unique_ptr<Output> OUT;
+    PEMOutput Output;
     PEMParams Params;
     unsigned status;
     public:
-    Tester(const std::string&, const std::string&, PEMParams&);
+    Tester(const std::string&, PEMOutput&, PEMParams&);
     void run(); 
   private:
     void checkForSequencing();
@@ -25,7 +27,6 @@ namespace pem {
     unsigned getStretchTime(unsigned, unsigned); 
     int calculateInterval(Time, Time);
     unsigned getSprendoverTime(unsigned);
-    void objectiveFunction();
     void dumpError(unsigned);
   };
 }

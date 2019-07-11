@@ -2,29 +2,40 @@
 
 #include "Util.hpp"
 #include "Params.hpp"
+#include "Output.hpp"
 #include "Tester.hpp"
 
 #include "llvm/Support/MemoryBuffer.h"
 #include "llvm/Support/YAMLTraits.h"
 
 std::string InFile, OutFile, ParamFile;
+unsigned Size;
 
 int main(int argc, char **argv) {
   VerifyArgs(argc, argv);
 
-  auto InputBuffer = llvm::MemoryBuffer::getFile(ParamFile);
-  llvm::yaml::Input yin(InputBuffer->get()->getBuffer());
-  
   pem::PEMParams Params;
-  yin >> Params;
+  auto InputPBuffer = llvm::MemoryBuffer::getFile(ParamFile);
+  llvm::yaml::Input yinp(InputPBuffer->get()->getBuffer());
+  yinp >> Params;
   
-  pem::Tester T(InFile, OutFile, Params);
+  pem::PEMOutput Output;
+  auto InputBuffer = llvm::MemoryBuffer::getFile(OutFile);
+  llvm::yaml::Input yino(InputBuffer->get()->getBuffer());
+  
+  for(unsigned i = 0; i < Size; i++) {
+    pem::JourneyOUT J;
+    Output.Journeys.push_back(J);
+  }
+  
+  yino >> Output;
+  
+  pem::Tester T(InFile, Output, Params);
   
   T.run();
 
   return 0;
 }
-
 
 // RESTRIÇÃO 6
 // A possibilidade de sequênciamento entre duas tarefas ti e tj é definida por duas restrições:
