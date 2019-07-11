@@ -116,7 +116,7 @@ unsigned Tester::getSprendoverTime(unsigned ID) {
   
   auto EA = IN->Tasks[ID_B]->getEndTime();      
   auto SB = IN->Tasks[ID_A]->getStartTime();      
-  
+ 
   return calculateInterval(SB, EA);
 }
 
@@ -186,12 +186,9 @@ void Tester::checkWorkDay() {
     
       if(SOT - RTPossible[j] > Params.TotalPaidTime) {
         if(SOT - Params.TotalPaidTime - RTPossible[j] > Params.Overtime) {
-          //std::cout << SOT - Params.TotalPaidTime - RTPossible[j] << std::endl;
-          //exit(1);
-          //continue;
+          continue;
         }
       }
-      std::cout << SOT << std::endl;
       
       isOK = true;
       RT = RTPossible[j]; 
@@ -204,11 +201,6 @@ void Tester::checkWorkDay() {
       }
     }
     
-    //std::cout << SOT << std::endl;
-    //std::cout << RT << std::endl;
-    //std::cout << ST << std::endl;
-    //exit(0);
-
     if(!isOK)
       dumpError(i);
   } 
