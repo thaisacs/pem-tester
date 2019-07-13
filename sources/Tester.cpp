@@ -153,56 +153,50 @@ void Tester::dumpError(unsigned i) {
 }
 
 void Tester::checkWorkDay() {
-  
   for(unsigned i = 0; i < Output.Journeys.size(); i++) {
     bool isOK = false;
-  
+    unsigned ST = 0, RT = 0;
+    int OT = 0;
+    
     auto RTIPossible = getRestTimeIndex(i);
     auto RTPossible = getRestTime(i);
     unsigned SOT = getSprendoverTime(i);
-    unsigned ST = 0, RT = 0;
-   
-    for(unsigned j = 0; j < RTIPossible.size(); j++) {
-      ST = getStretchTime(i, RTIPossible[j]);
-      
-      if(RTPossible[j] > Params.RestTime.Max)
-        continue;
-      
-      if(RTPossible[j] < Params.RestTime.Min) {
-        RTPossible[j] = 0;
-        ST = 0;
-      }
-      
-      if(RTPossible[j] == 0 && ST == 0) { 
-        if(SOT > Params.StretchTime) 
+    
+    if(SOT <= Params.StretchTime) {
+      ST = SOT;
+      isOK = true;
+    } else {
+      for(unsigned j = 0; j < RTIPossible.size(); j++) {
+        ST = 0; RT = 0; OT = 0;
+        
+        if(RTPossible[j] > Params.RestTime.Max)
           continue;
-      }else {
+        
+        ST = getStretchTime(i, RTIPossible[j]);
+        
+        if(RTPossible[j] < Params.RestTime.Min)
+          continue;
+        
         if(ST > Params.StretchTime)
           continue;
         
         if(SOT > Params.SprendoverTime)
           continue;
-      }
-    
-      if(SOT - RTPossible[j] > Params.TotalPaidTime) {
-        if(SOT - Params.TotalPaidTime - RTPossible[j] > Params.Overtime) {
-          continue;
-        }
-      }
-      
-      isOK = true;
-      RT = RTPossible[j]; 
-      break;
-    }
-   
-    if(!isOK && !RTPossible.size()) {
-      if(SOT <= Params.StretchTime) {
+        
+        RT = RTPossible[j]; 
+        OT = SOT - RT - Params.TotalPaidTime; 
+        
+        if(OT < 0)
+          OT = 0;
+
         isOK = true;
+        break;
       }
     }
-    
     if(!isOK)
       dumpError(i);
+    else
+      std::cout << "SOT " << SOT << " RT " << RT << " ST " << ST << " OT " << OT << std::endl;
   } 
 }
 
