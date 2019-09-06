@@ -4,7 +4,7 @@ extern std::string InFile, OutFile, ParamFile;
 extern unsigned Size;
 
 void usage() {
-  std::cout << "pemtester" << std::endl;
+  std::cout << "./pemtester ./pem-tester -i <caso-de-teste.txt> -o <solucao.yaml> -p <parametros.yaml> -s <solucao-amount>" << std::endl;
 }
 
 void VerifyArgs(int argc, char **argv) {

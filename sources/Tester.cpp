@@ -194,9 +194,10 @@ void Tester::checkWorkDay() {
       }
     }
     if(!isOK)
-      dumpError(i);
+      //dumpError(i);
+      std::cout << "-" << " & " << "-" << " & " << "-" << " & " << "-" << " & " << "-" << " \\\\" << std::endl;
     else
-      std::cout << "SOT " << SOT << " RT " << RT << " ST " << ST << " OT " << OT << std::endl;
+      std::cout << i << " & " << ST << " & " << RT << " & " << OT << " & " << SOT << " \\\\" << std::endl;
   } 
 }
 
@@ -224,5 +225,6 @@ void Tester::checkForSequencing() {
 
 void Tester::run() {
   checkForSequencing();
+  std::cout << "Jorney & StretchTime & RestTime & Overtime & SprendoverTime \\\\ \n";
   checkWorkDay();
 }
