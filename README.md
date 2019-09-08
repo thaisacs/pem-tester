@@ -15,6 +15,6 @@ sudo make install
 ### Usage
 
 ```
-./pem-tester -i <caso-de-teste.txt> -o <solucao.yaml> -p <parametros.yaml> -s <solucao-amount>
+pem-tester -i <caso-de-teste.txt> -o <solucao.yaml> -p <parametros.yaml> -s <solucao-amount>
 
 ```
