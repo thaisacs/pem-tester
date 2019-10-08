@@ -29,7 +29,18 @@ collect2: error: ld returned 1 exit status
 
 ### Usage
 
-```
-pem-tester -i <caso-de-teste.txt> -o <solucao.yaml> -p <parametros.yaml> -s <solucao-amount>
+After building and installing pem-tester, you can easily use it using the following commands:
 
 ```
+pem-tester -i <caso-de-teste.txt> -o <solucao.yaml> -p <parametros.yaml> -s <solution-amount>
+
+```
+
+Where, the relationship between test case and solution-amount is defined by:
+
+| Test Case      | Solution Amount|
+| -------------- | -------------- |
+| Inst130        | 21             |
+| Inst412        | 78             |
+| Inst1000       | 168            |
+| Inst2314       | 389            |
