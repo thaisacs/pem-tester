@@ -10,7 +10,7 @@ namespace pem {
   struct JourneyOUT {
     std::vector<unsigned> Tasks;
   };
-  
+
   struct PEMOutput {
     std::vector<JourneyOUT> Journeys;
   };

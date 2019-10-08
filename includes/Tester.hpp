@@ -12,19 +12,19 @@
 namespace pem {
   class Tester {
     std::unique_ptr<Input> IN;
-    //std::unique_ptr<Output> OUT;
     PEMOutput Output;
     PEMParams Params;
     unsigned status;
-    public:
+  public:
     Tester(const std::string&, PEMOutput&, PEMParams&);
-    void run(); 
+    void run();
   private:
     void checkForSequencing();
     void checkWorkDay();
-    std::vector<unsigned> getRestTime(unsigned); 
-    std::vector<unsigned> getRestTimeIndex(unsigned); 
-    unsigned getStretchTime(unsigned, unsigned); 
+    void checkTasksAmount();
+    std::vector<unsigned> getRestTime(unsigned);
+    std::vector<unsigned> getRestTimeIndex(unsigned);
+    unsigned getStretchTime(unsigned, unsigned);
     int calculateInterval(Time, Time);
     unsigned getSprendoverTime(unsigned);
     void dumpError(unsigned);

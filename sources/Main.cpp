@@ -18,20 +18,20 @@ int main(int argc, char **argv) {
   auto InputPBuffer = llvm::MemoryBuffer::getFile(ParamFile);
   llvm::yaml::Input yinp(InputPBuffer->get()->getBuffer());
   yinp >> Params;
-  
+
   pem::PEMOutput Output;
   auto InputBuffer = llvm::MemoryBuffer::getFile(OutFile);
   llvm::yaml::Input yino(InputBuffer->get()->getBuffer());
-  
+
   for(unsigned i = 0; i < Size; i++) {
     pem::JourneyOUT J;
     Output.Journeys.push_back(J);
   }
-  
+
   yino >> Output;
-  
+
   pem::Tester T(InFile, Output, Params);
-  
+
   T.run();
 
   return 0;

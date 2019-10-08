@@ -5,7 +5,7 @@ using namespace pem;
 
 Tester::Tester(const std::string &InFile, PEMOutput &Output,
     PEMParams &Params) : Params(std::move(Params)), Output(std::move(Output)) {
-  
+
   IN = std::make_unique<Input>(InFile);
 
   status = 0;
@@ -40,14 +40,14 @@ int Tester::calculateInterval(Time EndA, Time StartB) {
 
   Minutes -= EndA.Hour;
   Minutes *= 60;
-  
+
   if(EndA.Hour == StartB.Hour) {
     Minutes += StartB.Minutes - EndA.Minutes;
   }else {
     Minutes -= EndA.Minutes;
     Minutes += StartB.Minutes;
   }
-  
+
   if(Minutes < 0) {
     Minutes = 24*60 + Minutes;
   }
@@ -57,22 +57,22 @@ int Tester::calculateInterval(Time EndA, Time StartB) {
 
 std::vector<unsigned> Tester::getRestTime(unsigned ID) {
   std::vector<unsigned> Intervals;
-  
+
   int Interval = 0;
-  
+
   for(unsigned j = 1; j < Output.Journeys[ID].Tasks.size(); j++) {
     unsigned ID_A = Output.Journeys[ID].Tasks[j-1];
     unsigned ID_B = Output.Journeys[ID].Tasks[j];
-      
-    auto EA = IN->Tasks[ID_A]->getEndTime();      
-    auto SB = IN->Tasks[ID_B]->getStartTime();      
-  
+
+    auto EA = IN->Tasks[ID_A]->getEndTime();
+    auto SB = IN->Tasks[ID_B]->getStartTime();
+
     if(!checkTimes(EA, SB, 1)) {
       Interval = calculateInterval(EA, SB);
-      Intervals.push_back(Interval);  
+      Intervals.push_back(Interval);
     }
   }
-  
+
   return Intervals;
 }
 
@@ -82,10 +82,10 @@ std::vector<unsigned> Tester::getRestTimeIndex(unsigned ID) {
   for(unsigned j = 1; j < Output.Journeys[ID].Tasks.size(); j++) {
     unsigned ID_A = Output.Journeys[ID].Tasks[j-1];
     unsigned ID_B = Output.Journeys[ID].Tasks[j];
-  
-    auto EA = IN->Tasks[ID_A]->getEndTime();      
-    auto SB = IN->Tasks[ID_B]->getStartTime();      
-    
+
+    auto EA = IN->Tasks[ID_A]->getEndTime();
+    auto SB = IN->Tasks[ID_B]->getStartTime();
+
     if(!checkTimes(EA, SB, 1)) {
       Indexs.push_back(j);
     }
@@ -98,10 +98,10 @@ unsigned Tester::getStretchTime(unsigned ID, unsigned Index) {
   if(Index < Output.Journeys[ID].Tasks.size() && Index > 0) {
     unsigned ID_A = Output.Journeys[ID].Tasks[0];
     unsigned ID_B = Output.Journeys[ID].Tasks[Index-1];
-  
-    auto EA = IN->Tasks[ID_B]->getEndTime();      
-    auto SB = IN->Tasks[ID_A]->getStartTime();      
-    
+
+    auto EA = IN->Tasks[ID_B]->getEndTime();
+    auto SB = IN->Tasks[ID_A]->getStartTime();
+
     return calculateInterval(SB, EA);
   }
 
@@ -110,18 +110,18 @@ unsigned Tester::getStretchTime(unsigned ID, unsigned Index) {
 
 unsigned Tester::getSprendoverTime(unsigned ID) {
   unsigned Last = Output.Journeys[ID].Tasks.size() - 1;
-  
+
   unsigned ID_A = Output.Journeys[ID].Tasks[0];
   unsigned ID_B = Output.Journeys[ID].Tasks[Last];
-  
-  auto EA = IN->Tasks[ID_B]->getEndTime();      
-  auto SB = IN->Tasks[ID_A]->getStartTime();      
- 
+
+  auto EA = IN->Tasks[ID_B]->getEndTime();
+  auto SB = IN->Tasks[ID_A]->getStartTime();
+
   return calculateInterval(SB, EA);
 }
 
 void Tester::dumpError(unsigned i) {
-  std::cout << "error jorney: " << i << std::endl; 
+  std::cout << "error jorney: " << i << std::endl;
   //switch(status) {
   //  case 1:
   //    std::string Msg = "Jornada[" + std::to_string(i);
@@ -157,35 +157,35 @@ void Tester::checkWorkDay() {
     bool isOK = false;
     unsigned ST = 0, RT = 0;
     int OT = 0;
-    
+
     auto RTIPossible = getRestTimeIndex(i);
     auto RTPossible = getRestTime(i);
     unsigned SOT = getSprendoverTime(i);
-    
+
     if(SOT <= Params.StretchTime) {
       ST = SOT;
       isOK = true;
     } else {
       for(unsigned j = 0; j < RTIPossible.size(); j++) {
         ST = 0; RT = 0; OT = 0;
-        
+
         if(RTPossible[j] > Params.RestTime.Max)
           continue;
-        
+
         ST = getStretchTime(i, RTIPossible[j]);
-        
+
         if(RTPossible[j] < Params.RestTime.Min)
           continue;
-        
+
         if(ST > Params.StretchTime)
           continue;
-        
+
         if(SOT > Params.SprendoverTime)
           continue;
-        
-        RT = RTPossible[j]; 
-        OT = SOT - RT - Params.TotalPaidTime; 
-        
+
+        RT = RTPossible[j];
+        OT = SOT - RT - Params.TotalPaidTime;
+
         if(OT < 0)
           OT = 0;
 
@@ -194,11 +194,10 @@ void Tester::checkWorkDay() {
       }
     }
     if(!isOK)
-      //dumpError(i);
       std::cout << "-" << " & " << "-" << " & " << "-" << " & " << "-" << " & " << "-" << " \\\\" << std::endl;
     else
       std::cout << i << " & " << ST << " & " << RT << " & " << OT << " & " << SOT << " \\\\" << std::endl;
-  } 
+  }
 }
 
 void Tester::checkForSequencing() {
@@ -206,10 +205,10 @@ void Tester::checkForSequencing() {
     for(unsigned j = 1; j < Output.Journeys[i].Tasks.size(); j++) {
       unsigned ID_A = Output.Journeys[i].Tasks[j-1];
       unsigned ID_B = Output.Journeys[i].Tasks[j];
-  
+
       char DA = IN->Tasks[ID_A]->getDestination();
       char OB = IN->Tasks[ID_B]->getOrigin();
- 
+
       if(DA != OB) {
         status = 1;
         std::string Msg = "Jornada[" + std::to_string(i);
@@ -218,13 +217,23 @@ void Tester::checkForSequencing() {
         Msg += "] não são possíveis de serem sequenciadas;";
         std::cerr << Msg << std::endl;
       }
-    
     }
-  } 
+  }
+}
+
+void Tester::checkTasksAmount() {
+  unsigned amount = 0;
+  for(unsigned i = 0; i < Output.Journeys.size(); i++) {
+    amount += Output.Journeys[i].Tasks.size();
+  }
+
+  if(amount != IN->Tasks.size())
+    std::cout << "error: amount of solution tasks is incorrect" << std::endl;
 }
 
 void Tester::run() {
   checkForSequencing();
   std::cout << "Jorney & StretchTime & RestTime & Overtime & SprendoverTime \\\\ \n";
   checkWorkDay();
+  checkTasksAmount();
 }
