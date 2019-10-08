@@ -4,7 +4,7 @@ O problema de escalonamento de motoristas (PEM) é um problema computável que t
 
 ### Installing
 
-To build PEM-TESTER, you are going to need g++8.3.0 or later with C++17 support, CMake 3.13.4 or later, and LLVM 7.0. After installing all dependencies, it is a simple cmake/make usage
+To build PEM-TESTER, you are going to need g++8.3.0 or later with C++17 support, CMake 3.13.4 or later, and LLVM 7.0. After installing all dependencies, it is a simple cmake/make usage:
 
 ```
 mkdir build
@@ -14,7 +14,18 @@ make
 sudo make install
 ```
 
+Execute 
+
+```
 sudo apt install libgl-dev libglu-dev libglib2.0-dev libsm-dev libxrender-dev libfontconfig1-dev libxext-dev
+```
+
+If you get these errors
+
+```
+/usr/bin/ld: cannot find -lz 
+collect2: error: ld returned 1 exit status
+```
 
 ### Usage
 
