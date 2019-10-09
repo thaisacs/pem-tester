@@ -222,13 +222,20 @@ void Tester::checkForSequencing() {
 }
 
 void Tester::checkTasksAmount() {
-  unsigned amount = 0;
-  for(unsigned i = 0; i < Output.Journeys.size(); i++) {
-    amount += Output.Journeys[i].Tasks.size();
+  for(unsigned k = 0; k < IN->Tasks.size(); k++) {
+    unsigned amount = 0;
+    for(unsigned i = 0; i < Output.Journeys.size(); i++) {
+      for(unsigned j = 0; j < Output.Journeys[i].Tasks.size(); j++) {
+        if(k == Output.Journeys[i].Tasks[j])
+          amount++;
+      }
+    }
+    if(amount == 0) {
+      std::cout << "error: jorney " << k << "does not appear in the solution\n";
+    }else if(amount > 1) {
+      std::cout << "error: jorney " << k << "appear several times in the solution\n";
+    }
   }
-
-  if(amount != IN->Tasks.size())
-    std::cout << "error: amount of solution tasks is incorrect" << std::endl;
 }
 
 void Tester::run() {
