@@ -43,4 +43,4 @@ Where, the relationship between test case and solution-amount is defined by:
 | Inst130        | 21             |
 | Inst412        | 78             |
 | Inst1000       | 168            |
-| Inst2314       | 389            |
+| Inst2313       | 389            |
