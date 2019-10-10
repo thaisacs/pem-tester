@@ -32,7 +32,7 @@ collect2: error: ld returned 1 exit status
 After building and installing pem-tester, you can easily use it using the following commands:
 
 ```
-pem-tester -i <caso-de-teste.txt> -o <solucao.yaml> -p <parametros.yaml> -s <solution-amount>
+pem-tester -i <test-case.txt> -o <solucao.yaml> -p <parametros.yaml> -s <solution-amount>
 
 ```
 
